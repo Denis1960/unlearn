@@ -1,0 +1,16 @@
+# Ignore Python cache and environment
+__pycache__/
+.venv/
+.env
+
+# Ignore large model files and data
+data/
+checkpoints/
+*.pth
+
+# Ignore logs and output
+*.log
+submission.csv
+debug_0.png
+
+.ul_venv/
