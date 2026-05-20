@@ -74,15 +74,29 @@ def run_pipeline():
         except Exception as e:
             print(f"Error during training loop at step {step}: {e}")
             break
-            
-    # 6. Submission
-    print("Optimization finished. Generating submission...")
-    generate_submission(
-        unlearned_model=model,
-        test_images_dir=Config.TEST_SET_DIR,
-        output_csv_path="C:/code/unlearn/submission.csv",
-        device=device
-    )
+
+    # 6. Human-in-the-Loop Validation Gate
+    print("\n" + "="*40)
+    print("OPTIMIZATION FINISHED.")
+    print("Please check 'debug_0.png' in your project folder.")
+    print("Verify if the boxes are accurately capturing debris vs background noise.")
+    print("="*40)
+    
+    user_verification = input("Are the detections in debug_0.png accurate? (y/n): ").lower().strip()
+    
+    if user_verification == 'y':
+        print("Verification passed. Generating submission...")
+        generate_submission(
+            unlearned_model=model,
+            test_images_dir=Config.TEST_SET_DIR,
+            output_csv_path="C:/code/unlearn/submission.csv",
+            device=device
+        )
+        print("Submission generated: submission.csv")
+    else:
+        print("Submission aborted. Adjust A_PENALTY_WEIGHT in config.py or tweak preprocessing.")
+        print("Pipeline exiting.")
+    
     print("--- PIPELINE COMPLETE ---")
 
 if __name__ == "__main__":
